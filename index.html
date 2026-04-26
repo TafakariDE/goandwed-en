@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Go & Wed – Kennenlerngespräch</title>
+  <meta name="description" content="Modern mobile questionnaire for the first intro meeting and an initial assessment of whether a wedding in Denmark is a good fit." />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+  <style>
+    :root{
+      --bg:#f5f1eb;--bg2:#efe7de;--surface:rgba(255,255,255,.84);--surface-solid:#fff;--text:#1f1b16;--muted:#6e665d;--line:rgba(74,62,49,.12);
+      --pri:#0f766e;--pri-dark:#0b5c56;--pri-soft:#dff3ef;--accent:#b7794b;--ok:#2f855a;--shadow:0 20px 50px rgba(29,24,18,.08);--radius:24px;--radius-sm:16px;--max:1100px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left,var(--bg2),transparent 35%),linear-gradient(180deg,#f8f5f0 0%,#f5f1eb 100%);line-height:1.55}
+    img,svg{display:block;max-width:100%} input,select,textarea,button{font:inherit} a{color:inherit} .wrap{width:min(calc(100% - 28px),var(--max));margin:auto}
+    .top{position:sticky;top:0;z-index:20;background:rgba(248,245,240,.72);backdrop-filter:blur(14px);border-bottom:1px solid rgba(74,62,49,.08)} .top-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--pri),#4fd1c5);display:grid;place-items:center;box-shadow:var(--shadow);color:#fff;font-size:1.1rem}
+    .hero{padding:42px 0 22px}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch}.hero-card,.info-card,.section,.cta-card{background:var(--surface);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero-card{padding:30px;position:relative;overflow:hidden}.hero-card::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:radial-gradient(circle,var(--pri-soft),transparent 70%);pointer-events:none}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--pri-soft);color:var(--pri);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+    h1{font-size:clamp(2.2rem,5vw,4.2rem);line-height:.98;margin:16px 0 14px;letter-spacing:-.04em} h2{margin:0 0 8px;font-size:1.2rem;letter-spacing:-.02em} p{margin:0}.lead{font-size:1.05rem;color:var(--muted);max-width:58ch}
+    .feature-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.feature{padding:14px;border-radius:18px;background:rgba(255,255,255,.62);border:1px solid rgba(74,62,49,.08)} .feature strong{display:block;font-size:.95rem;margin-bottom:4px}.feature span{display:block;font-size:.9rem;color:var(--muted)}
+    .info-card{padding:26px;display:grid;align-content:space-between}.info-stack{display:grid;gap:14px;margin-top:12px}.mini{padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.62);border:1px solid rgba(74,62,49,.08)} .mini strong{display:block;margin-bottom:4px}.mini span{color:var(--muted);font-size:.95rem}
+    .banner{display:none;margin:0 0 18px;padding:14px 16px;border-radius:16px;background:#edf8f2;border:1px solid rgba(47,133,90,.2);color:#20543a}.banner.show{display:block}
+    form{display:grid;gap:18px;padding:8px 0 40px}.section{padding:22px}.section-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}.section-head p{color:var(--muted);max-width:58ch;font-size:.96rem}
+    .grid-2,.grid-3{display:grid;gap:14px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.field{display:grid;gap:8px}.label{font-size:.93rem;font-weight:700} .hint{font-size:.82rem;color:var(--muted)}
+    input,select,textarea{width:100%;padding:14px 15px;border-radius:16px;border:1px solid rgba(74,62,49,.12);background:rgba(255,255,255,.92);color:var(--text);transition:.18s border-color,.18s box-shadow,.18s transform} textarea{min-height:120px;resize:vertical}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:rgba(15,118,110,.55);box-shadow:0 0 0 4px rgba(15,118,110,.12);transform:translateY(-1px)}
+    fieldset{margin:0;padding:0;border:0}.legend{font-size:.93rem;font-weight:700;margin-bottom:8px}.options{display:grid;gap:10px}.radio-card,.check-card{display:flex;gap:12px;align-items:flex-start;padding:14px 15px;border-radius:18px;background:rgba(255,255,255,.82);border:1px solid rgba(74,62,49,.1);min-height:58px} .radio-card input,.check-card input{width:18px;height:18px;flex:0 0 auto;margin-top:2px}
+    .radio-card span,.check-card span{display:block}.radio-card small,.check-card small{display:block;color:var(--muted);font-size:.84rem;margin-top:2px}
+    .consent{padding:18px;border-radius:20px;background:linear-gradient(180deg,rgba(223,243,239,.9),rgba(255,255,255,.8));border:1px solid rgba(15,118,110,.14)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}.btn{appearance:none;border:0;border-radius:999px;padding:14px 18px;font-weight:800;letter-spacing:.01em;cursor:pointer;min-height:52px}.btn-primary{background:linear-gradient(135deg,var(--pri),#14928a);color:#fff}.btn-primary:hover{background:linear-gradient(135deg,var(--pri-dark),#117972)} .btn-secondary{background:#fff;border:1px solid rgba(74,62,49,.12)}
+    .state{font-size:.92rem;color:var(--muted)} .footer-note{margin-top:10px;color:var(--muted);font-size:.85rem}
+    .pdf{display:none;background:#fff;color:#111;padding:18mm 14mm;width:210mm;min-height:297mm}.pdf.show{display:block}.pdf h1{font-size:24pt;line-height:1.05;margin:0 0 2mm}.pdf h2{font-size:12pt;margin:5mm 0 2mm}.pdf p,.pdf li{font-size:10.5pt;line-height:1.5}.pdf-top{display:flex;justify-content:space-between;gap:8mm;border-bottom:1px solid #ddd;padding-bottom:4mm;margin-bottom:5mm}.pdf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4mm}.pdf-box{border:1px solid #ddd;border-radius:10px;padding:4mm;background:#fafafa}.pdf-mini{font-size:9pt;color:#666;margin-bottom:1mm}.pdf-value{font-size:10.5pt}.pdf ul{margin:2mm 0 0;padding-left:5mm}
+    @media (max-width:920px){.hero-grid,.grid-2,.grid-3,.feature-row{grid-template-columns:1fr}.hero{padding-top:26px}.hero-card,.info-card,.section{padding:18px}.section-head{display:block}.top-inner{padding:12px 0} h1{font-size:clamp(2rem,11vw,3rem)} .lead{font-size:1rem} .btn{width:100%;justify-content:center}}
+    @media print{body>*:not(.pdf){display:none!important}.pdf{display:block!important;width:auto;min-height:auto;padding:0}}
+  </style>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <div class="brand"><img src="/logo.svg" alt="Go & Wed" width="42" height="42"><div>Go & Wed</div></div></div>
+      <div style="font-size:.92rem;color:var(--muted)">Questionnaire for your intro meeting</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <span class="eyebrow">Initial assessment</span>
+          <h1>Tell us briefly about your situation.</h1>
+          <p class="lead">Your answers help us prepare the first meeting and assess together whether getting married in Denmark may be suitable for you. Please complete the form as it currently applies to you.</p>
+          
+            <div class="feature"><strong>Mobile friendly</strong><span>Easy to read and fill out on a smartphone.</span></div>
+            <div class="feature"><strong>PDF at the end</strong><span>You can save your answers directly as a summary.</span></div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <div class="banner" id="okBanner">Thank you! Your answers have been sent. You can now download your PDF summary.</div>
+
+    <form name="go-and-wed-kennlerngespraech-modern" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="form">
+      <input type="hidden" name="form-name" value="go-and-wed-kennlerngespraech-modern" />
+      <p style="display:none"><label>Bitte nicht ausfüllen <input name="bot-field"></label></p>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>Contact details</h2>
+            <p>So we can prepare your meeting and contact you if needed.</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label class="label" for="p1">First name Person 1</label><input id="p1" name="vorname_person_1" autocomplete="given-name" required></div>
+          <div class="field"><label class="label" for="p2">First name Person 2</label><input id="p2" name="vorname_person_2" autocomplete="given-name" required></div>
+          <div class="field"><label class="label" for="mail">Email</label><input id="mail" type="email" name="email" autocomplete="email" required></div>
+          <div class="field"><label class="label" for="phone">WhatsApp or phone</label><input id="phone" name="telefon" autocomplete="tel"></div>
+          <div class="field"><label class="label" for="lang">Preferred language</label><select id="lang" name="sprache" required><option value="">Please choose</option><option>Deutsch</option><option>Englisch</option><option>Französisch</option><option>Andere</option></select></div>
+          <div class="field"><label class="label" for="country">Current country of residence</label><input id="country" name="wohnland" required></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><h2>Your situation</h2><p>This information helps us understand your case more quickly during the meeting.</p></div></div>
+        <div class="grid-2">
+          <div class="field"><label class="label" for="pair">How long have you been a couple?</label><select id="pair" name="beziehungsdauer" required><option value="">Please choose</option><option>unter 1 Jahr</option><option>1–3 Jahre</option><option>länger als 3 Jahre</option></select></div>
+          <div class="field"><label class="label" for="cohabit">Do you live together?</label><select id="cohabit" name="zusammenleben" required><option value="">Please choose</option><option>Ja</option><option>Nein</option></select></div>
+          <div class="field"><label class="label" for="kids">Do you have children together?</label><select id="kids" name="gemeinsame_kinder" required><option value="">Please choose</option><option>Nein</option><option>Ja</option></select></div>
+          <div class="field"><label class="label" for="time">When would you like to get married?</label><select id="time" name="zeitrahmen" required><option value="">Please choose</option><option>innerhalb 3 Monate</option><option>3–6 Monate</option><option>später</option><option>noch offen</option></select></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><h2>Nationality and residence status</h2><p>Please enter the details as they currently apply to you.</p></div></div>
+        <div class="grid-2">
+          <div class="field"><label class="label" for="nat1">Nationality Person 1</label><input id="nat1" name="staatsangehoerigkeit_person_1" required></div>
+          <div class="field"><label class="label" for="nat2">Nationality Person 2</label><input id="nat2" name="staatsangehoerigkeit_person_2" required></div>
+          <div class="field"><label class="label" for="status1">Residence status Person 1</label><select id="status1" name="aufenthaltsstatus_person_1" required><option value="">Please choose</option><option>Staatsangehörigkeit des Aufenthaltslandes</option><option>EU-Freizügigkeit / EU-Aufenthaltsrecht</option><option>Befristeter Aufenthaltstitel / Visum</option><option>Dauerhafter Aufenthaltstitel</option><option>Unsicher</option></select></div>
+          <div class="field"><label class="label" for="status2">Residence status Person 2</label><select id="status2" name="aufenthaltsstatus_person_2" required><option value="">Please choose</option><option>Staatsangehörigkeit des Aufenthaltslandes</option><option>EU-Freizügigkeit / EU-Aufenthaltsrecht</option><option>Befristeter Aufenthaltstitel / Visum</option><option>Dauerhafter Aufenthaltstitel</option><option>Unsicher</option></select></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><h2>Marital status</h2><p>Bitte wählt für jede Person den aktuellen Marital status.</p></div></div>
+        <div class="grid-2">
+          <fieldset>
+            <legend class="legend">Person 1</legend>
+            <div class="options">
+              <label class="radio-card"><input type="radio" name="familienstand_person_1" value="Single" required><span>Single<small>Not married yet</small></span></label>
+              <label class="radio-card"><input type="radio" name="familienstand_person_1" value="Divorced"><span>Divorced<small>Previous marriage has ended</small></span></label>
+              <label class="radio-card"><input type="radio" name="familienstand_person_1" value="Widowed"><span>Widowed<small>Previous marriage ended due to death</small></span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend class="legend">Person 2</legend>
+            <div class="options">
+              <label class="radio-card"><input type="radio" name="familienstand_person_2" value="Single" required><span>Single<small>Not married yet</small></span></label>
+              <label class="radio-card"><input type="radio" name="familienstand_person_2" value="Divorced"><span>Divorced<small>Previous marriage has ended</small></span></label>
+              <label class="radio-card"><input type="radio" name="familienstand_person_2" value="Widowed"><span>Widowed<small>Previous marriage ended due to death</small></span></label>
+            </div>
+          </fieldset>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><h2>Current status</h2><p>What have you already prepared, and where would you like support?</p></div></div>
+        <div class="grid-2">
+          <label class="check-card"><input type="checkbox" name="stand" value="Passport copies or IDs are available"><span>Passport copies or IDs are available<small>You already have the documents ready</small></span></label>
+          <label class="check-card"><input type="checkbox" name="stand" value="Documents have been reviewed roughly"><span>Documents have been reviewed roughly<small>You have already gained an initial overview</small></span></label>
+          <label class="check-card"><input type="checkbox" name="stand" value="You have already contacted an office"><span>You have already contacted an office<small>For example an authority, municipality, or service provider</small></span></label>
+          <label class="check-card"><input type="checkbox" name="stand" value="We have not started yet"><span>We have not started yet<small>Ihr startet mit Go & Wed ganz am Anfang</small></span></label>
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label class="label" for="help">Where do you need the most support in the first meeting?</label>
+          <textarea id="help" name="unterstuetzung" placeholder="e.g. initial assessment, documents, process, scheduling, or filling out together"></textarea>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="consent">
+          <div class="section-head" style="margin-bottom:10px"><div><h2>Consent</h2><p>By submitting, you agree that we may use your information to prepare your intro meeting.</p></div></div>
+          <label class="check-card"><input type="checkbox" name="einverstaendnis" required value="ja"><span>Ich bin damit einverstanden, dass Go & Wed meine Angaben zur Vorbereitung des Kennenlerngesprächs verarbeitet.</span></label>
+          <div class="actions">
+            
+            <button class="btn btn-secondary" type="button" id="pdfBtn">PDF herunterladen</button>
+            <span class="state" id="state">No PDF created yet.</span>
+          </div>
+          <div class="footer-note">After submitting, you can save your answers directly as a PDF.</div>
+        </div>
+      </section>
+    </form>
+  </main>
+
+  <section class="pdf" id="pdfSheet">
+    <div class="pdf-top">
+      <div><h1>Go & Wed</h1><p>Summary for your intro meeting</p></div>
+      <div><p><strong>Created on:</strong> <span id="pdfDate"></span></p></div>
+    </div>
+    <h2>Contact details</h2>
+    <div class="pdf-grid">
+      <div class="pdf-box"><div class="pdf-mini">Person 1</div><div class="pdf-value" id="dp1"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Person 2</div><div class="pdf-value" id="dp2"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Email</div><div class="pdf-value" id="dmail"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Telefon</div><div class="pdf-value" id="dphone"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Sprache</div><div class="pdf-value" id="dlang"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Wohnland</div><div class="pdf-value" id="dcountry"></div></div>
+    </div>
+    <h2>Your situation</h2>
+    <div class="pdf-grid">
+      <div class="pdf-box"><div class="pdf-mini">Beziehungsdauer</div><div class="pdf-value" id="dpair"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Zusammenleben</div><div class="pdf-value" id="dcohabit"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Gemeinsame Kinder</div><div class="pdf-value" id="dkids"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Zeitrahmen</div><div class="pdf-value" id="dtime"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Nationality Person 1</div><div class="pdf-value" id="dnat1"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Nationality Person 2</div><div class="pdf-value" id="dnat2"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Residence status Person 1</div><div class="pdf-value" id="dstatus1"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Residence status Person 2</div><div class="pdf-value" id="dstatus2"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Marital status Person 1</div><div class="pdf-value" id="dfs1"></div></div>
+      <div class="pdf-box"><div class="pdf-mini">Marital status Person 2</div><div class="pdf-value" id="dfs2"></div></div>
+    </div>
+    <h2>Current status</h2>
+    <div class="pdf-box">
+      <div class="pdf-mini">Vorbereitung</div>
+      <ul id="dstand"></ul>
+      <div class="pdf-mini" style="margin-top:4mm">Unterstützungsbedarf</div>
+      <p id="dhelp"></p>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('form');
+    const pdfBtn = document.getElementById('pdfBtn');
+    const pdfSheet = document.getElementById('pdfSheet');
+    const state = document.getElementById('state');
+    const okBanner = document.getElementById('okBanner');
+    const value = n => (form.elements[n] && form.elements[n].value && form.elements[n].value.trim()) ? form.elements[n].value.trim() : 'Not provided';
+    const radio = n => (form.querySelector(`input[name="${n}"]:checked`) || {}).value || 'Not provided';
+    const checks = n => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map(el => el.value);
+    function fillPdf(){
+      document.getElementById('pdfDate').textContent = new Date().toLocaleString('de-DE');
+      document.getElementById('dp1').textContent = value('vorname_person_1');
+      document.getElementById('dp2').textContent = value('vorname_person_2');
+      document.getElementById('dmail').textContent = value('email');
+      document.getElementById('dphone').textContent = value('telefon');
+      document.getElementById('dlang').textContent = value('sprache');
+      document.getElementById('dcountry').textContent = value('wohnland');
+      document.getElementById('dpair').textContent = value('beziehungsdauer');
+      document.getElementById('dcohabit').textContent = value('zusammenleben');
+      document.getElementById('dkids').textContent = value('gemeinsame_kinder');
+      document.getElementById('dtime').textContent = value('zeitrahmen');
+      document.getElementById('dnat1').textContent = value('staatsangehoerigkeit_person_1');
+      document.getElementById('dnat2').textContent = value('staatsangehoerigkeit_person_2');
+      document.getElementById('dstatus1').textContent = value('aufenthaltsstatus_person_1');
+      document.getElementById('dstatus2').textContent = value('aufenthaltsstatus_person_2');
+      document.getElementById('dfs1').textContent = radio('familienstand_person_1');
+      document.getElementById('dfs2').textContent = radio('familienstand_person_2');
+      document.getElementById('dhelp').textContent = value('unterstuetzung');
+      const list = document.getElementById('dstand');
+      const items = checks('stand');
+      list.innerHTML = items.length ? items.map(i => `<li>${i}</li>`).join('') : '<li>No selection yet</li>';
+    }
+    pdfBtn.addEventListener('click', async () => {
+      try {
+        fillPdf();
+        pdfSheet.classList.add('show');
+        const filename = `${value('vorname_person_1')}-${value('vorname_person_2')}`.toLowerCase().replace(/[^a-z0-9äöüß-]+/gi,'-').replace(/-+/g,'-').replace(/^-|-$/g,'') || 'go-and-wed';
+        await html2pdf().set({margin:[8,8,10,8],filename:`${filename}-kennenlerngespraech.pdf`,image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(pdfSheet).save();
+        state.textContent = 'PDF wurde heruntergeladen.';
+      } catch(e) {
+        state.textContent = 'PDF konnte nicht erstellt werden.';
+      } finally {
+        pdfSheet.classList.remove('show');
+      }
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if(!form.reportValidity()) return;
+      const data = new FormData(form);
+      try {
+        await fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(data).toString()});
+        okBanner.classList.add('show');
+        state.textContent = 'Form successfully sent.';
+      } catch(err) {
+        state.textContent = 'Absenden fehlgeschlagen, PDF ist weiterhin möglich.';
+      }
+    });
+  </script>
+</body>
+</html>
